@@ -1,0 +1,215 @@
+﻿services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: agrosolutions-prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    networks:
+      - agrosolutions-network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: agrosolutions-grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
+      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+    networks:
+      - agrosolutions-network
+    depends_on:
+      - prometheus
+
+  identidade:
+    build:
+      context: .
+      dockerfile: src/AgroSolutions.Identidade/Dockerfile
+    container_name: agrosolutions-identidade
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=${CONNECTION_STRING}
+      - EmailSettings__SmtpServer=${SMTP_SERVER}
+      - EmailSettings__SmtpPort=${SMTP_PORT}
+      - EmailSettings__SmtpUser=${SMTP_USER}
+      - EmailSettings__SmtpPassword=${SMTP_PASSWORD}
+      - EmailSettings__FromEmail=${FROM_EMAIL}
+      - EmailSettings__FromName=${FROM_NAME}
+      - EmailSettings__EnableSsl=${ENABLE_SSL}
+      - EmailSettings__TimeoutSeconds=${TIMEOUT_SECONDS}
+      - EmailSettings__UseMockEmail=false
+      - RabbitMQ__HostName=${RABBITMQ_HOST}
+      - RabbitMQ__Port=${RABBITMQ_PORT}
+      - RabbitMQ__UserName=${RABBITMQ_USER}
+      - RabbitMQ__Password=${RABBITMQ_PASSWORD}
+    ports:
+      - "5001:8080"
+    networks:
+      - agrosolutions-network
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "--quiet", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  propriedades:
+    build:
+      context: .
+      dockerfile: src/AgroSolutions.Propriedades/Dockerfile
+    container_name: agrosolutions-propriedades
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=${CONNECTION_STRING}
+      - Identidade__Url=http://identidade:8080
+      - Jwt__RequireHttpsMetadata=false
+      - RabbitMQ__HostName=${RABBITMQ_HOST}
+      - RabbitMQ__Port=${RABBITMQ_PORT}
+      - RabbitMQ__UserName=${RABBITMQ_USER}
+      - RabbitMQ__Password=${RABBITMQ_PASSWORD}
+    ports:
+      - "5002:8080"
+    networks:
+      - agrosolutions-network
+    depends_on:
+      identidade:
+        condition: service_healthy
+
+  ingestaodados:
+    build:
+      context: .
+      dockerfile: src/AgroSolutions.IngestaoDados/Dockerfile
+    container_name: agrosolutions-ingestaodados
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=${CONNECTION_STRING}
+      - Identidade__Url=http://identidade:8080
+      - Jwt__RequireHttpsMetadata=false
+      - RabbitMQ__HostName=${RABBITMQ_HOST}
+      - RabbitMQ__Port=${RABBITMQ_PORT}
+      - RabbitMQ__UserName=${RABBITMQ_USER}
+      - RabbitMQ__Password=${RABBITMQ_PASSWORD}
+    ports:
+      - "5004:8080"
+    networks:
+      - agrosolutions-network
+    depends_on:
+      identidade:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "--quiet", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  processamentodados:
+    build:
+      context: .
+      dockerfile: src/AgroSolutions.ProcessamentoDados/Dockerfile
+    container_name: agrosolutions-processamentodados
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=${CONNECTION_STRING}
+      - Identidade__Url=http://identidade:8080
+      - Jwt__RequireHttpsMetadata=false
+      - RabbitMQ__HostName=${RABBITMQ_HOST}
+      - RabbitMQ__Port=${RABBITMQ_PORT}
+      - RabbitMQ__UserName=${RABBITMQ_USER}
+      - RabbitMQ__Password=${RABBITMQ_PASSWORD}
+    ports:
+      - "5005:8080"
+    networks:
+      - agrosolutions-network
+    depends_on:
+      identidade:
+        condition: service_healthy
+
+  analise:
+    build:
+      context: .
+      dockerfile: src/AgroSolutions.Analise/Dockerfile
+    container_name: agrosolutions-analise
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=${CONNECTION_STRING}
+      - Identidade__Url=http://identidade:8080
+      - Jwt__RequireHttpsMetadata=false
+      - RabbitMQ__HostName=${RABBITMQ_HOST}
+      - RabbitMQ__Port=${RABBITMQ_PORT}
+      - RabbitMQ__UserName=${RABBITMQ_USER}
+      - RabbitMQ__Password=${RABBITMQ_PASSWORD}
+    ports:
+      - "5006:8080"
+    networks:
+      - agrosolutions-network
+    depends_on:
+      identidade:
+        condition: service_healthy
+
+  notificacoes:
+    build:
+      context: .
+      dockerfile: src/AgroSolutions.Notificacoes/Dockerfile
+    container_name: agrosolutions-notificacoes
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=${CONNECTION_STRING}
+      - Identidade__Url=http://identidade:8080
+      - Jwt__RequireHttpsMetadata=false
+      - RabbitMQ__HostName=${RABBITMQ_HOST}
+      - RabbitMQ__Port=${RABBITMQ_PORT}
+      - RabbitMQ__UserName=${RABBITMQ_USER}
+      - RabbitMQ__Password=${RABBITMQ_PASSWORD}
+      - EmailSettings__SmtpServer=${SMTP_SERVER}
+      - EmailSettings__SmtpPort=${SMTP_PORT}
+      - EmailSettings__SmtpUser=${SMTP_USER}
+      - EmailSettings__SmtpPassword=${SMTP_PASSWORD}
+      - EmailSettings__FromEmail=${FROM_EMAIL}
+      - EmailSettings__FromName=${FROM_NAME}
+      - EmailSettings__EnableSsl=${ENABLE_SSL}
+      - EmailSettings__TimeoutSeconds=${TIMEOUT_SECONDS}
+    ports:
+      - "5007:8080"
+    networks:
+      - agrosolutions-network
+    depends_on:
+      identidade:
+        condition: service_healthy
+
+  sensores:
+    build:
+      context: .
+      dockerfile: src/AgroSolutions.Sensores/Dockerfile
+    container_name: agrosolutions-sensores
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+      - Simulador__IngestaoApi__BaseUrl=http://ingestaodados:8080
+      - Simulador__Autenticacao__IdentidadeUrl=http://identidade:8080
+      - Simulador__Autenticacao__Email=${SIMULADOR_EMAIL}
+      - Simulador__Autenticacao__Senha=${SIMULADOR_SENHA}
+    ports:
+      - "5003:8080"
+    networks:
+      - agrosolutions-network
+    depends_on:
+      ingestaodados:
+        condition: service_healthy
+
+networks:
+  agrosolutions-network:
+    driver: bridge
+
+volumes:
+  prometheus-data:
+  grafana-data:
+
+
+

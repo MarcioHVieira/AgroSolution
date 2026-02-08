@@ -1,0 +1,68 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sensores
+  namespace: agrosolutions
+  labels:
+    app: sensores
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sensores
+  template:
+    metadata:
+      labels:
+        app: sensores
+        tier: backend
+    spec:
+      containers:
+      - name: sensores
+        image: agrosolutions-sensores:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: agrosolutions-config
+        env:
+        - name: Simulador__IngestaoApi__BaseUrl
+          value: "http://ingestaodados-service:8080"
+        - name: Simulador__Autenticacao__IdentidadeUrl
+          value: "http://identidade-service:8080"
+        - name: Simulador__Autenticacao__Email
+          valueFrom:
+            secretKeyRef:
+              name: agrosolutions-secrets
+              key: SIMULADOR_EMAIL
+        - name: Simulador__Autenticacao__Senha
+          valueFrom:
+            secretKeyRef:
+              name: agrosolutions-secrets
+              key: SIMULADOR_SENHA
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3

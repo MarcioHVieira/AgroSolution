@@ -1,0 +1,67 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: agrosolutions-local
+    environment: development
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets:
+          - localhost:9090
+
+  - job_name: identidade
+    static_configs:
+      - targets:
+          - identidade:8080
+    metrics_path: /metrics
+    scrape_interval: 10s
+    scrape_timeout: 5s
+
+  - job_name: propriedades
+    static_configs:
+      - targets:
+          - propriedades:8080
+    metrics_path: /metrics
+    scrape_interval: 10s
+    scrape_timeout: 5s
+
+  - job_name: ingestaodados
+    static_configs:
+      - targets:
+          - ingestaodados:8080
+    metrics_path: /metrics
+    scrape_interval: 10s
+    scrape_timeout: 5s
+
+  - job_name: processamentodados
+    static_configs:
+      - targets:
+          - processamentodados:8080
+    metrics_path: /metrics
+    scrape_interval: 10s
+    scrape_timeout: 5s
+
+  - job_name: analise
+    static_configs:
+      - targets:
+          - analise:8080
+    metrics_path: /metrics
+    scrape_interval: 10s
+    scrape_timeout: 5s
+
+  - job_name: notificacoes
+    static_configs:
+      - targets:
+          - notificacoes:8080
+    metrics_path: /metrics
+    scrape_interval: 10s
+    scrape_timeout: 5s
+  - job_name: sensores
+    static_configs:
+      - targets:
+          - sensores:8080
+    metrics_path: /metrics
+    scrape_interval: 10s
+    scrape_timeout: 5s

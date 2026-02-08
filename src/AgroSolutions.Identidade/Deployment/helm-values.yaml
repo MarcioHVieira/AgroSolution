@@ -1,0 +1,77 @@
+# Exemplo de values.yaml para Helm Chart
+# Este arquivo contém apenas valores NÃO sensíveis
+
+replicaCount: 2
+
+image:
+  repository: agrosolutions/identidade
+  pullPolicy: IfNotPresent
+  tag: "1.0.0"
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  hosts:
+    - host: identidade.agrosolutions.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: identidade-tls
+      hosts:
+        - identidade.agrosolutions.com
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+
+# Configurações da aplicação (não sensíveis)
+app:
+  jwt:
+    issuer: "AgroSolutions.Identidade"
+    audience: "AgroSolutions"
+    expiracaoMinutos: 60
+  
+  rabbitmq:
+    port: 5672
+    exchangeName: "agrosolutions.identidade"
+    exchangeType: "topic"
+  
+  emailSettings:
+    smtpServer: "smtp.gmail.com"
+    smtpPort: 587
+    fromName: "AgroSolutions"
+
+# Health checks
+healthcheck:
+  liveness:
+    path: /health
+    initialDelaySeconds: 30
+    periodSeconds: 10
+  readiness:
+    path: /health
+    initialDelaySeconds: 10
+    periodSeconds: 5
+
+# Prometheus monitoring
+monitoring:
+  enabled: true
+  path: /metrics
+

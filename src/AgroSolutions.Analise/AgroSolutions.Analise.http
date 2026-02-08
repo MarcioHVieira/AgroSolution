@@ -1,0 +1,11 @@
+@AgroSolutions.Analise_HostAddress = http://localhost:5206
+
+GET {{AgroSolutions.Analise_HostAddress}}/todos/
+Accept: application/json
+
+###
+
+GET {{AgroSolutions.Analise_HostAddress}}/todos/1
+Accept: application/json
+
+###

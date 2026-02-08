@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.2" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+    <PackageReference Include="TngTech.ArchUnitNET.xUnit" Version="0.13.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AgroSolutions.Propriedades\AgroSolutions.Propriedades.csproj" />
+    <ProjectReference Include="..\AgroSolutions.IngestaoDados\AgroSolutions.IngestaoDados.csproj" />
+    <ProjectReference Include="..\AgroSolutions.Analise\AgroSolutions.Analise.csproj" />
+    <ProjectReference Include="..\AgroSolutions.Notificacoes\AgroSolutions.Notificacoes.csproj" />
+    <ProjectReference Include="..\AgroSolutions.ProcessamentoDados\AgroSolutions.ProcessamentoDados.csproj" />
+    <ProjectReference Include="..\AgroSolutions.Identidade\AgroSolutions.Identidade.csproj" />
+    <ProjectReference Include="..\AgroSolutions.SharedKernel\AgroSolutions.SharedKernel.csproj" />
+  </ItemGroup>
+
+</Project>

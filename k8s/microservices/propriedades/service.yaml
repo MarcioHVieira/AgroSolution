@@ -1,0 +1,17 @@
+﻿apiVersion: v1
+kind: Service
+metadata:
+  name: propriedades-service
+  namespace: agrosolutions
+  labels:
+    app: propriedades
+    tier: backend
+spec:
+  type: ClusterIP
+  selector:
+    app: propriedades
+  ports:
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP
+    name: http

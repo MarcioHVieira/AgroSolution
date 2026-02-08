@@ -1,0 +1,176 @@
+﻿@AgroSolutions.Sensores_HostAddress = http://localhost:5008
+@talhaoId = 3fa85f64-5717-4562-b3fc-2c963f66afa6
+
+### Obter informações sobre cenários disponíveis
+GET {{AgroSolutions.Sensores_HostAddress}}/api/simulador/cenarios
+Accept: application/json
+
+###
+
+### Simular Cenário de SECA - Normal (sem alerta)
+POST {{AgroSolutions.Sensores_HostAddress}}/api/simulador/seca
+Content-Type: application/json
+
+{
+  "talhaoId": "{{talhaoId}}",
+  "severidade": "Normal",
+  "enviarParaApi": true
+}
+
+###
+
+### Simular Cenário de SECA - Média
+POST {{AgroSolutions.Sensores_HostAddress}}/api/simulador/seca
+Content-Type: application/json
+
+{
+  "talhaoId": "{{talhaoId}}",
+  "severidade": "Media",
+  "enviarParaApi": true
+}
+
+###
+
+### Simular Cenário de SECA - Alta
+POST {{AgroSolutions.Sensores_HostAddress}}/api/simulador/seca
+Content-Type: application/json
+
+{
+  "talhaoId": "{{talhaoId}}",
+  "severidade": "Alta",
+  "enviarParaApi": true
+}
+
+###
+
+### Simular Cenário de SECA - Crítica (ALERTA GARANTIDO)
+POST {{AgroSolutions.Sensores_HostAddress}}/api/simulador/seca
+Content-Type: application/json
+
+{
+  "talhaoId": "{{talhaoId}}",
+  "severidade": "Critica",
+  "enviarParaApi": true
+}
+
+###
+
+### Simular Cenário de GEADA - Normal
+POST {{AgroSolutions.Sensores_HostAddress}}/api/simulador/geada
+Content-Type: application/json
+
+{
+  "talhaoId": "{{talhaoId}}",
+  "severidade": "Normal",
+  "enviarParaApi": true
+}
+
+###
+
+### Simular Cenário de GEADA - Crítica (GEADA CONFIRMADA)
+POST {{AgroSolutions.Sensores_HostAddress}}/api/simulador/geada
+Content-Type: application/json
+
+{
+  "talhaoId": "{{talhaoId}}",
+  "severidade": "Critica",
+  "enviarParaApi": true
+}
+
+###
+
+### Simular Cenário de CALOR EXCESSIVO - Média
+POST {{AgroSolutions.Sensores_HostAddress}}/api/simulador/calor-excessivo
+Content-Type: application/json
+
+{
+  "talhaoId": "{{talhaoId}}",
+  "severidade": "Media",
+  "enviarParaApi": true
+}
+
+###
+
+### Simular Cenário de CALOR EXCESSIVO - Crítica
+POST {{AgroSolutions.Sensores_HostAddress}}/api/simulador/calor-excessivo
+Content-Type: application/json
+
+{
+  "talhaoId": "{{talhaoId}}",
+  "severidade": "Critica",
+  "enviarParaApi": true
+}
+
+###
+
+### Simular Cenário de EXCESSO DE UMIDADE - Média
+POST {{AgroSolutions.Sensores_HostAddress}}/api/simulador/excesso-umidade
+Content-Type: application/json
+
+{
+  "talhaoId": "{{talhaoId}}",
+  "severidade": "Media",
+  "enviarParaApi": true
+}
+
+###
+
+### Simular Cenário de EXCESSO DE UMIDADE - Alta
+POST {{AgroSolutions.Sensores_HostAddress}}/api/simulador/excesso-umidade
+Content-Type: application/json
+
+{
+  "talhaoId": "{{talhaoId}}",
+  "severidade": "Alta",
+  "enviarParaApi": true
+}
+
+###
+
+### Simular Cenário de RISCO DE PRAGA - Média
+POST {{AgroSolutions.Sensores_HostAddress}}/api/simulador/risco-praga
+Content-Type: application/json
+
+{
+  "talhaoId": "{{talhaoId}}",
+  "severidade": "Media",
+  "enviarParaApi": true
+}
+
+###
+
+### Simular Cenário de RISCO DE PRAGA - Crítica
+POST {{AgroSolutions.Sensores_HostAddress}}/api/simulador/risco-praga
+Content-Type: application/json
+
+{
+  "talhaoId": "{{talhaoId}}",
+  "severidade": "Critica",
+  "enviarParaApi": true
+}
+
+###
+
+### ⚡ CENÁRIO COMPLETO - Executa TODOS os cenários em sequência
+### ATENÇÃO: Este processo pode levar 3-5 minutos para completar
+POST {{AgroSolutions.Sensores_HostAddress}}/api/simulador/cenario-completo/{{talhaoId}}
+
+###
+
+### Simular SEM enviar para API (apenas gerar dados)
+POST {{AgroSolutions.Sensores_HostAddress}}/api/simulador/seca
+Content-Type: application/json
+
+{
+  "talhaoId": "{{talhaoId}}",
+  "severidade": "Critica",
+  "enviarParaApi": false
+}
+
+###
+
+
+GET {{AgroSolutions.Sensores_HostAddress}}/todos/1
+Accept: application/json
+
+###

@@ -1,0 +1,50 @@
+﻿# Arquivos Git
+**/.git
+**/.gitignore
+**/.gitattributes
+
+# Arquivos de build e temporários
+**/bin
+**/obj
+**/.vs
+**/.vscode
+**/*.user
+**/*.suo
+**/.idea
+
+# Arquivos Docker
+**/.dockerignore
+**/Dockerfile*
+**/docker-compose*
+
+# Arquivos de pacotes
+**/packages
+**/node_modules
+
+# Arquivos de teste e debug
+**/TestResults
+**/*.trx
+**/coverage
+**/.nyc_output
+**/npm-debug.log
+
+# Documentação e recursos
+README.md
+LICENSE
+**/*.md
+
+# Configurações de desenvolvimento
+**/appsettings.Development.json
+**/launchSettings.json
+**/.env
+**/.env.local
+**/secrets.json
+**/secrets.dev.yaml
+**/values.dev.yaml
+
+# Arquivos temporários
+**/*.tmp
+**/*.log
+**/.DS_Store
+**/Thumbs.db
+

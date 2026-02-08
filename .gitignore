@@ -1,0 +1,87 @@
+# ==================================
+# AGROSOLUTIONS .gitignore
+# ==================================
+
+# ==================================
+# ARQUIVOS SENSÍVEIS - NUNCA COMMITAR!
+# ==================================
+.env
+*.env
+!.env.example
+secrets.json
+appsettings.*.local.json
+
+# Chaves RSA
+keys/
+*.pem
+*.key
+*_private*.xml
+*_public*.xml
+rsa_*
+
+# ==================================
+# Kubernetes Secrets
+# ==================================
+**/secrets.yaml
+**/secrets.yml
+k8s/**/secrets*.yaml
+k8s/**/secrets*.yml
+
+# ==================================
+# Visual Studio
+# ==================================
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio cache/options
+.vs/
+.vscode/
+
+# ==================================
+# .NET
+# ==================================
+project.lock.json
+project.fragment.lock.json
+artifacts/
+**/Properties/launchSettings.json
+
+# NuGet
+*.nupkg
+*.snupkg
+**/packages/*
+!**/packages/build/
+*.nuget.props
+*.nuget.targets
+
+# ==================================
+# Docker
+# ==================================
+docker-compose.override.yml
+
+# ==================================
+# Outros
+# ==================================
+*.log
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db

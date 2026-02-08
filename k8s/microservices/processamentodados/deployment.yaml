@@ -1,0 +1,81 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: processamentodados
+  namespace: agrosolutions
+  labels:
+    app: processamentodados
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: processamentodados
+  template:
+    metadata:
+      labels:
+        app: processamentodados
+        tier: backend
+    spec:
+      containers:
+      - name: processamentodados
+        image: agrosolutions-processamentodados:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: agrosolutions-config
+        env:
+        - name: ConnectionStrings__DefaultConnection
+          valueFrom:
+            secretKeyRef:
+              name: agrosolutions-secrets
+              key: CONNECTION_STRING
+        - name: Identidade__Url
+          value: "http://identidade-service:8080"
+        - name: RabbitMQ__HostName
+          valueFrom:
+            secretKeyRef:
+              name: agrosolutions-secrets
+              key: RABBITMQ_HOST
+        - name: RabbitMQ__Port
+          valueFrom:
+            secretKeyRef:
+              name: agrosolutions-secrets
+              key: RABBITMQ_PORT
+        - name: RabbitMQ__UserName
+          valueFrom:
+            secretKeyRef:
+              name: agrosolutions-secrets
+              key: RABBITMQ_USER
+        - name: RabbitMQ__Password
+          valueFrom:
+            secretKeyRef:
+              name: agrosolutions-secrets
+              key: RABBITMQ_PASSWORD
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3

@@ -1,0 +1,19 @@
+﻿apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-provider
+  namespace: agrosolutions
+data:
+  dashboard-provider.yml: |
+    apiVersion: 1
+    
+    providers:
+      - name: 'AgroSolutions Dashboards'
+        orgId: 1
+        folder: 'AgroSolutions'
+        type: file
+        disableDeletion: false
+        updateIntervalSeconds: 10
+        allowUiUpdates: true
+        options:
+          path: /var/lib/grafana/dashboards

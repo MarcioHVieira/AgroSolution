@@ -1,0 +1,36 @@
+<Solution>
+  <Folder Name="/Analise/">
+    <Project Path="src/AgroSolutions.Analise.Test/AgroSolutions.Analise.Test.csproj" Id="9b35a186-bfe1-43dc-b524-2de382908907" />
+    <Project Path="src/AgroSolutions.Analise/AgroSolutions.Analise.csproj" />
+  </Folder>
+  <Folder Name="/Architecture/">
+    <Project Path="src/AgroSolutions.ArchitectureTests/AgroSolutions.ArchitectureTests.csproj" />
+  </Folder>
+  <Folder Name="/Identidade/">
+    <Project Path="src/AgroSolutions.Identidade.Test/AgroSolutions.Identidade.Test.csproj" Id="1ff2498b-33e0-4925-81d5-6e766dd13128" />
+    <Project Path="src/AgroSolutions.Identidade/AgroSolutions.Identidade.csproj" />
+  </Folder>
+  <Folder Name="/IngestaoDados/">
+    <Project Path="src/AgroSolutions.IngestaoDados.Test/AgroSolutions.IngestaoDados.Test.csproj" Id="5ddb1d29-33c4-454a-8dff-865be6d66399" />
+    <Project Path="src/AgroSolutions.IngestaoDados/AgroSolutions.IngestaoDados.csproj" />
+  </Folder>
+  <Folder Name="/Notificacoes/">
+    <Project Path="src/AgroSolutions.Notificacoes.Test/AgroSolutions.Notificacoes.Test.csproj" Id="13ddbcf0-c9d1-479a-8114-bbbcf546d2dc" />
+    <Project Path="src/AgroSolutions.Notificacoes/AgroSolutions.Notificacoes.csproj" />
+  </Folder>
+  <Folder Name="/ProcessamentoDados/">
+    <Project Path="src/AgroSolutions.ProcessamentoDados.Test/AgroSolutions.ProcessamentoDados.Test.csproj" />
+    <Project Path="src/AgroSolutions.ProcessamentoDados/AgroSolutions.ProcessamentoDados.csproj" />
+  </Folder>
+  <Folder Name="/Propriedades/">
+    <Project Path="src/AgroSolutions.Propriedades.Test/AgroSolutions.Propriedades.Test.csproj" Id="bb988d7a-5b21-493d-8461-6927304761c1" />
+    <Project Path="src/AgroSolutions.Propriedades/AgroSolutions.Propriedades.csproj" />
+  </Folder>
+  <Folder Name="/Sensores/">
+    <Project Path="src/AgroSolutions.Sensores/AgroSolutions.Sensores.csproj" Id="cbade71d-b597-41a8-b6be-036b429bc2a4" />
+  </Folder>
+  <Folder Name="/SharedKernel/">
+    <Project Path="src/AgroSolutions.SharedKernel.Test/AgroSolutions.SharedKernel.Test.csproj" Id="a6483daf-d2da-4025-9a31-842810771997" />
+    <Project Path="src/AgroSolutions.SharedKernel/AgroSolutions.SharedKernel.csproj" />
+  </Folder>
+</Solution>

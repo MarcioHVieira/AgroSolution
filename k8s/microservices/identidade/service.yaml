@@ -1,0 +1,17 @@
+﻿apiVersion: v1
+kind: Service
+metadata:
+  name: identidade-service
+  namespace: agrosolutions
+  labels:
+    app: identidade
+    tier: backend
+spec:
+  type: ClusterIP
+  selector:
+    app: identidade
+  ports:
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP
+    name: http

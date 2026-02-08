@@ -1,0 +1,124 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agrosolutions-identidade
+  labels:
+    app: agrosolutions-identidade
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: agrosolutions-identidade
+  template:
+    metadata:
+      labels:
+        app: agrosolutions-identidade
+    spec:
+      containers:
+      - name: identidade
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - name: http
+          containerPort: {{ .Values.service.targetPort }}
+          protocol: TCP
+        
+        # Variáveis de ambiente NÃO sensíveis
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Production"
+        - name: ASPNETCORE_URLS
+          value: "http://+:8080"
+        
+        # Configurações não sensíveis do appsettings
+        - name: Jwt__Issuer
+          value: "{{ .Values.app.jwt.issuer }}"
+        - name: Jwt__Audience
+          value: "{{ .Values.app.jwt.audience }}"
+        - name: Jwt__ExpiracaoMinutos
+          value: "{{ .Values.app.jwt.expiracaoMinutos }}"
+        
+        - name: RabbitMQ__Port
+          value: "{{ .Values.app.rabbitmq.port }}"
+        - name: RabbitMQ__ExchangeName
+          value: "{{ .Values.app.rabbitmq.exchangeName }}"
+        - name: RabbitMQ__ExchangeType
+          value: "{{ .Values.app.rabbitmq.exchangeType }}"
+        
+        - name: EmailSettings__SmtpPort
+          value: "{{ .Values.app.emailSettings.smtpPort }}"
+        - name: EmailSettings__FromName
+          value: "{{ .Values.app.emailSettings.fromName }}"
+        
+        # Variáveis SENSÍVEIS vindo do Kubernetes Secret
+        - name: ConnectionStrings__DefaultConnection
+          valueFrom:
+            secretKeyRef:
+              name: agrosolutions-identidade-secrets
+              key: ConnectionStrings__DefaultConnection
+        
+        - name: JwtSettings__ChaveSecreta
+          valueFrom:
+            secretKeyRef:
+              name: agrosolutions-identidade-secrets
+              key: JwtSettings__ChaveSecreta
+        
+        - name: EmailSettings__SmtpServer
+          valueFrom:
+            secretKeyRef:
+              name: agrosolutions-identidade-secrets
+              key: EmailSettings__SmtpServer
+        
+        - name: EmailSettings__SmtpUser
+          valueFrom:
+            secretKeyRef:
+              name: agrosolutions-identidade-secrets
+              key: EmailSettings__SmtpUser
+        
+        - name: EmailSettings__SmtpPassword
+          valueFrom:
+            secretKeyRef:
+              name: agrosolutions-identidade-secrets
+              key: EmailSettings__SmtpPassword
+        
+        - name: EmailSettings__FromEmail
+          valueFrom:
+            secretKeyRef:
+              name: agrosolutions-identidade-secrets
+              key: EmailSettings__FromEmail
+        
+        - name: RabbitMQ__HostName
+          valueFrom:
+            secretKeyRef:
+              name: agrosolutions-identidade-secrets
+              key: RabbitMQ__HostName
+        
+        - name: RabbitMQ__UserName
+          valueFrom:
+            secretKeyRef:
+              name: agrosolutions-identidade-secrets
+              key: RabbitMQ__UserName
+        
+        - name: RabbitMQ__Password
+          valueFrom:
+            secretKeyRef:
+              name: agrosolutions-identidade-secrets
+              key: RabbitMQ__Password
+        
+        # Health checks
+        livenessProbe:
+          httpGet:
+            path: {{ .Values.healthcheck.liveness.path }}
+            port: http
+          initialDelaySeconds: {{ .Values.healthcheck.liveness.initialDelaySeconds }}
+          periodSeconds: {{ .Values.healthcheck.liveness.periodSeconds }}
+        
+        readinessProbe:
+          httpGet:
+            path: {{ .Values.healthcheck.readiness.path }}
+            port: http
+          initialDelaySeconds: {{ .Values.healthcheck.readiness.initialDelaySeconds }}
+          periodSeconds: {{ .Values.healthcheck.readiness.periodSeconds }}
+        
+        resources:
+          {{- toYaml .Values.resources | nindent 12 }}

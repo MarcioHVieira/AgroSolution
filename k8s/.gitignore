@@ -1,0 +1,8 @@
+﻿# Secrets
+base/secrets.yaml
+
+# Dashboards ConfigMap (gerado automaticamente)
+monitoring/grafana/configmap-dashboards.yaml
+
+# Logs
+*.log
