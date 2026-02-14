@@ -30,7 +30,7 @@ O **AgroSolutions** é uma plataforma completa de gestão agrícola baseada em m
 
 ### Diagrama da Arquitetura
 
-[![Agro-Solutions.png](https://i.postimg.cc/T2nbFjQ9/Agro-Solutions.png)](https://postimg.cc/7bYbT2FG)
+[![Agro-Solutions.png](https://i.postimg.cc/T1nwmj2g/Agro-Solutions.png)](https://postimg.cc/wRTgYmmj)
 
 ```
 ┌───────────────────────────────────────────────────────────────────────────────────────┐
